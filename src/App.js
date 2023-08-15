@@ -1,22 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { Button, Stack } from "@mui/material";
+import CustomizedProgressBars from "./components/progressBar";
 
 function App() {
   return (
-    <div className="App">
+    <div className="body">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <form className="form">
+          {/* <Stack
+            direction="column"
+            justifyContent="flex-end"
+            alignItems="center"
+            spacing={1}
+          ></Stack> */}
+          <Stack
+            direction="column"
+            justifyContent="flex-end"
+            alignItems="center"
+            spacing={1}
+          >
+            <CustomizedProgressBars />
+            <h4 id="question">Quize</h4>
+
+            <button className="answer" id="answer" variant="outlined">
+              Var1
+            </button>
+            <button className="answer" id="answer" variant="outlined">
+              Var2
+            </button>
+            <button className="answer" id="answer" variant="outlined">
+              Var3
+            </button>
+          </Stack>
+        </form>
       </header>
     </div>
   );
