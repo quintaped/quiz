@@ -1,7 +1,6 @@
 import "./App.css";
-import { Button, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import { BorderLinearProgress } from "./components/progressBar";
-import result from "./components/result";
 import { useState } from "react";
 
 function App() {
@@ -17,16 +16,16 @@ function App() {
     {
       question: "How many continents are there?",
       answers: [
-        { btn: "7", correct: true },
         { btn: "9", correct: false },
         { btn: "5", correct: false },
+        { btn: "7", correct: true },
       ],
     },
     {
       question: "who is the author of the picture of dorian gray?",
       answers: [
-        { btn: "Oscar Wilde", correct: true },
         { btn: "Agatha Christie", correct: false },
+        { btn: "Oscar Wilde", correct: true },
         { btn: "Jenny Han", correct: false },
       ],
     },
@@ -41,9 +40,9 @@ function App() {
     {
       question: "How many days are in a leap year?",
       answers: [
-        { btn: "366", correct: true },
         { btn: "365", correct: false },
         { btn: "364", correct: false },
+        { btn: "366", correct: true },
       ],
     },
     {
@@ -53,16 +52,17 @@ function App() {
   let [score, setScore] = useState(0);
   let [currentQuestion, setCurrentQuestion] = useState(0);
   let [progress, setProgress] = useState(0);
+  const [showResult, setShowResult] = useState(false);
 
   const onClick = (e) => {
     let text = e.target.id;
     setProgress(progress + 20);
     if (currentQuestion < 4) {
       setCurrentQuestion(currentQuestion + 1);
+    } else {
+      setShowResult(true);
     }
-    if (currentQuestion > 4) {
-    }
-    console.log(score);
+    // console.log(score);
     if (questions[currentQuestion].answers[text].correct === true) {
       console.log("correct");
       setScore((score = score + 1));
@@ -70,45 +70,58 @@ function App() {
       console.log("wrong!");
     }
   };
+
   const startAgain = () => {
     setCurrentQuestion((currentQuestion = 0));
     setScore((score = 0));
     setProgress((progress = 0));
+    setShowResult(false);
   };
   return (
     <div className="body">
-      <header className="App-header">
+      {!showResult ? (
+        <header className="App-header">
+          <form className="form">
+            <Stack
+              direction="column"
+              justifyContent="flex-end"
+              alignItems="center"
+              spacing={1}
+            >
+              <BorderLinearProgress variant="determinate" value={progress} />
+              <h4 id="question">{questions[currentQuestion].question}</h4>
+
+              <button onClick={onClick} className="answer" id="0" type="button">
+                {questions[currentQuestion].answers[0].btn}
+              </button>
+              <button onClick={onClick} className="answer" id="1" type="button">
+                {questions[currentQuestion].answers[1].btn}
+              </button>
+              <button onClick={onClick} className="answer" id="2" type="button">
+                {questions[currentQuestion].answers[2].btn}
+              </button>
+              <p id="demo"></p>
+            </Stack>
+          </form>
+        </header>
+      ) : (
         <form className="form">
-          {/* <Stack
-            direction="column"
-            justifyContent="flex-end"
-            alignItems="center"
-            spacing={1}
-          ></Stack> */}
           <Stack
             direction="column"
             justifyContent="flex-end"
             alignItems="center"
             spacing={1}
           >
-            <BorderLinearProgress variant="determinate" value={progress} />
-            <h4 id="question">{questions[currentQuestion].question}</h4>
-
-            <button onClick={onClick} className="answer" id="0" type="button">
-              {questions[currentQuestion].answers[0].btn}
-            </button>
-            <button onClick={onClick} className="answer" id="1" type="button">
-              {questions[currentQuestion].answers[1].btn}
-            </button>
-            <button onClick={onClick} className="answer" id="2" type="button">
-              {questions[currentQuestion].answers[2].btn}
+            <h4>Congratulations! You've completed the quiz.</h4>
+            <p>
+              Your result {score}/{currentQuestion + 1}
+            </p>
+            <button onClick={startAgain} className="start" type="button">
+              Start again
             </button>
           </Stack>
         </form>
-        <button onClick={startAgain} className="start" type="button">
-          Start again
-        </button>
-      </header>
+      )}
     </div>
   );
 }
